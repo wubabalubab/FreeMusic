@@ -1,4 +1,4 @@
-package com.example.freemusic;
+package com.example.freemusic.view;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.freemusic.R;
 
 public class InputDialog extends DialogFragment {
 

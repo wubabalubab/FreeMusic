@@ -4,6 +4,7 @@
     package="com.example.freemusic">
 
     <application
+        android:name=".abstracts.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,8 +15,18 @@
         android:theme="@style/Theme.FreeMusic"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".activity.OhterActivity"
+            android:exported="false"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.PlayActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
