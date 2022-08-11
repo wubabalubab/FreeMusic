@@ -13,11 +13,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="main" parent="Theme.AppCompat.NoActionBar">
-
-            <!--All customizations that are NOT specific to a particular API-level can go here.-->
-
-            <item name="android:windowNoTitle">true</item>
-
+    <style name="mainActivity" parent="Theme.AppCompat.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

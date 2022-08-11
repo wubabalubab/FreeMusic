@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/teal_200"
     tools:context=".activity.MainActivity">
 
     <TextView
         android:id="@+id/tv_prompt"
         android:text="click dice"
-        android:textColor="@color/black"
+        android:textColor="@color/test"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -13,20 +13,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FreeMusic"
+        tools:ignore="LockedOrientationActivity"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+
         <activity
             android:name=".activity.OhterActivity"
             android:exported="false"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PlayActivity"
             android:exported="false"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/main">
+            android:screenOrientation="portrait"
+            android:theme="@style/mainActivity"
+            android:configChanges="uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
