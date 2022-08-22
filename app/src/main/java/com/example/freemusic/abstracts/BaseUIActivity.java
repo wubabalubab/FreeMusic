@@ -18,9 +18,11 @@ public abstract class BaseUIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDarDkMode = isDarkMode();
         initView();
+        initData();
     }
 
     protected abstract void initView();
+    protected abstract void initData();
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {

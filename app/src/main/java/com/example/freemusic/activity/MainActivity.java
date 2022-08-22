@@ -35,18 +35,16 @@ public class MainActivity extends BaseUIActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (PlayActivity.playActivityWeakReference!=null&&PlayActivity.playActivityWeakReference.get() != null) {
-            PlayActivity playActivity=PlayActivity.playActivityWeakReference.get();
-            if (playActivity==null||playActivity.isDestroyed()||playActivity.isFinishing()){
-                Toast.makeText(this, "isfinished", Toast.LENGTH_SHORT).show();
-                PlayActivity.playActivityWeakReference=null;
-            }
-        }
 
     }
 
     @Override
     protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
 
     }
 }

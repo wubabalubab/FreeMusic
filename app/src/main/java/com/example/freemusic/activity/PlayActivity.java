@@ -1,61 +1,59 @@
 package com.example.freemusic.activity;
 
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
+public class PlayActivity extends BaseUIActivity implements View.OnClickListener {
 
-public class PlayActivity extends BaseUIActivity {
 
-    public static WeakReference<PlayActivity> playActivityWeakReference;
+    private TextView tvAuthor, tvTitle, tvCountTime, tvCurrentTime;
+    private ImageView imStart, imPlayNext, imPlayAfter, imOrder, imCurrentPlayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-        playActivityWeakReference=new WeakReference<PlayActivity>(this);
 
-        openfile();
     }
 
-    private void openfile() {
-        AssetManager assetManager=this.getAssets();
-        try {
-            InputStream inputStream=assetManager.open("yumou.mp3");
-//            File file=new File();
-//            Log.e(TAG, "openfile: "+file.length() );
-            Log.e(TAG, "openfile: "+inputStream.available() );
-//            inputStream.
-            AssetFileDescriptor assetFileDescriptor=assetManager.openFd("yumou.mp3");
-            MediaPlayer mediaPlayer=new MediaPlayer();
-            mediaPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(),assetFileDescriptor.getStartOffset(),assetFileDescriptor.getLength());
-            mediaPlayer.setLooping(false);
-            mediaPlayer.prepare();
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mediaPlayer.start();
-                }
-            });
-            //            mediaPlayer.setAudioAttributes(AudioAttributes.CONTENT_TYPE_MUSIC);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private static final String TAG = "PlayActivity";
     @Override
     protected void initView() {
+        tvAuthor = findViewById(R.id.tv_actPlay_author);
+        tvTitle = findViewById(R.id.tv_actPlay_title);
+        tvCountTime = findViewById(R.id.tv_actPlay_countTime);
+        tvCurrentTime = findViewById(R.id.tv_actPlay_currentTime);
+        imStart = findViewById(R.id.im_actplay_start);
+        imPlayAfter = findViewById(R.id.im_actplay_after);
+        imPlayNext = findViewById(R.id.im_actplay_next);
+        imOrder = findViewById(R.id.im_actplay_order);
+        imCurrentPlayList = findViewById(R.id.im_actplay_currentlist);
 
+        // TODO: 22-8-23 style and lyrics
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.im_actplay_start) {
+
+        } else if (v.getId() == R.id.im_actplay_after) {
+
+        } else if (v.getId() == R.id.im_actplay_next) {
+
+        } else if (v.getId() == R.id.im_actplay_order) {
+
+        } else if (v.getId() == R.id.im_actplay_currentlist) {
+
+        }
     }
 }
