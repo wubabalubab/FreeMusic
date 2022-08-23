@@ -1,10 +1,18 @@
 package com.example.freemusic.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.PermissionRequest;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
@@ -30,6 +38,17 @@ public class MainActivity extends BaseUIActivity {
                 startActivity(new Intent(MainActivity.this,OhterActivity.class));
             }
         });
+
+        ActivityResultLauncher<String> resultRegistry=registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                if (result) {
+
+                }
+            }
+        });
+        resultRegistry.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+
     }
 
     @Override

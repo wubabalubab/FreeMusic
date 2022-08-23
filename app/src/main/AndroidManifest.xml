@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.freemusic">
 
+
+    <!--    此处权限仍有不完善-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".abstracts.MyApplication"
         android:allowBackup="true"
@@ -35,11 +39,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
+            android:configChanges="uiMode"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/mainActivity"
-            android:configChanges="uiMode">
+            android:theme="@style/mainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

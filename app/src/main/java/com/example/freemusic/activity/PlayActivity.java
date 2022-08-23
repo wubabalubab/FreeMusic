@@ -7,12 +7,14 @@ import android.widget.TextView;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
+import com.example.freemusic.util.MusicPlayController;
 
 public class PlayActivity extends BaseUIActivity implements View.OnClickListener {
 
 
     private TextView tvAuthor, tvTitle, tvCountTime, tvCurrentTime;
     private ImageView imStart, imPlayNext, imPlayAfter, imOrder, imCurrentPlayList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,22 @@ public class PlayActivity extends BaseUIActivity implements View.OnClickListener
     @Override
     protected void initData() {
 
+        MusicPlayController musicPlayController = new MusicPlayController();
+        musicPlayController.initPlayer();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                musicPlayController.play();
+            }
+        }).start();
     }
+
 
     @Override
     public void onClick(View v) {

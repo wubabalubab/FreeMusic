@@ -12,10 +12,11 @@ import androidx.core.app.ActivityCompat;
 public abstract class BaseUIActivity extends AppCompatActivity {
 
     private int mDarDkMode;
-
+    protected  String TAG = "BaseUIActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TAG=this.getClass().getSimpleName();
         mDarDkMode = isDarkMode();
         initView();
         initData();
