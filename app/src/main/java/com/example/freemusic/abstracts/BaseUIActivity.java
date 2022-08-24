@@ -2,6 +2,7 @@ package com.example.freemusic.abstracts;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,8 +16,8 @@ public abstract class BaseUIActivity extends AppCompatActivity {
     protected  String TAG = "BaseUIActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         TAG=this.getClass().getSimpleName();
+        super.onCreate(savedInstanceState);
         mDarDkMode = isDarkMode();
         initView();
         initData();

@@ -3,6 +3,8 @@ package com.example.freemusic.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.PermissionRequest;
 import android.widget.TextView;
@@ -12,32 +14,23 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseUIActivity {
 
-    TextView textView,textView1;
+
+    DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView=findViewById(R.id.tv_prompt);
-        textView1=findViewById(R.id.tv_prompt1);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,PlayActivity.class));
-            }
-        });
-        textView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,OhterActivity.class));
-            }
-        });
+        super.onCreate(savedInstanceState);
 
         ActivityResultLauncher<String> resultRegistry=registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
             @Override
@@ -48,7 +41,6 @@ public class MainActivity extends BaseUIActivity {
             }
         });
         resultRegistry.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-
     }
 
     @Override
@@ -59,11 +51,21 @@ public class MainActivity extends BaseUIActivity {
 
     @Override
     protected void initView() {
+        mDrawerLayout=findViewById(R.id.drawer_actmain);
+        mNavigationView=findViewById(R.id.navigation_actmain);
+        // TODO: 22-8-25 处理全面屏冲突问题
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
 
+                return true;
+            }
+        });
     }
 
     @Override
     protected void initData() {
-
     }
 }

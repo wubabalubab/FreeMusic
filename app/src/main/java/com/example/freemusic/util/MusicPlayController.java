@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.freemusic.abstracts.MyApplication;
 import com.example.freemusic.inf.MusicPlay;
@@ -137,6 +138,7 @@ public class MusicPlayController implements MusicPlay {
         if (cursor != null) {
             cursor.close();
         }
+        Log.e("TAG", "getLocalList: "+mMusicBeanList );
         return mMusicBeanList;
     }
 

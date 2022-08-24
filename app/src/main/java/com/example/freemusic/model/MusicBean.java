@@ -24,8 +24,6 @@ public class MusicBean {
         return "MusicBean{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
-                ", size=" + size +
-                ", duration=" + duration +
                 ", path='" + path + '\'' +
                 ", id=" + id +
                 ", albumId=" + albumId +

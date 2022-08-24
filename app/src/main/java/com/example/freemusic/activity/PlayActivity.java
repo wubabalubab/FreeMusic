@@ -56,6 +56,7 @@ public class PlayActivity extends BaseUIActivity implements View.OnClickListener
                 musicPlayController.play();
             }
         }).start();
+
     }
 
 
