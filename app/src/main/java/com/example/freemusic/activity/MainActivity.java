@@ -1,21 +1,16 @@
 package com.example.freemusic.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.PermissionRequest;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.freemusic.R;
@@ -27,12 +22,14 @@ public class MainActivity extends BaseUIActivity {
 
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
+    TextView tvBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
 
-        ActivityResultLauncher<String> resultRegistry=registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+        ActivityResultLauncher<String> resultRegistry = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
             @Override
             public void onActivityResult(Boolean result) {
                 if (result) {
@@ -50,10 +47,21 @@ public class MainActivity extends BaseUIActivity {
     }
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        } else {
+            mDrawerLayout.closeDrawers();
+        }
+    }
+
+
+    @Override
     protected void initView() {
-        mDrawerLayout=findViewById(R.id.drawer_actmain);
-        mNavigationView=findViewById(R.id.navigation_actmain);
-        // TODO: 22-8-25 处理全面屏冲突问题
+        mDrawerLayout = findViewById(R.id.drawer_actmain);
+        mNavigationView = findViewById(R.id.navigation_actmain);
+        tvBack = findViewById(R.id.tv_act_main_back);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -61,6 +69,17 @@ public class MainActivity extends BaseUIActivity {
                 mDrawerLayout.closeDrawers();
 
                 return true;
+            }
+        });
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawers();
+                }
+                if (!MainActivity.this.isFinishing()) {
+                    finish();
+                }
             }
         });
     }

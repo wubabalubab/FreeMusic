@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="test">#FF000000</color>
+
+    <color name="grey">#616161</color>
+    <color name="lightblue">#40c4ff</color>
+    <color name="blue">#448aff</color>
+    <color name="deeppurple">#536dfe</color>
+    <color name="orage">#e65100</color>
+    <color name="bluegrey">#546e7a</color>
 </resources>

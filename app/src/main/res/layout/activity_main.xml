@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/teal_200"
     tools:context=".activity.MainActivity">
 
@@ -11,15 +11,35 @@
         android:id="@+id/drawer_actmain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_actmain"
-            android:fitsSystemWindows="true"
-            android:layout_gravity="start"
-            app:menu="@menu/navigation_main_menu"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/navigation_main_menu">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="40dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_act_main_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:text="@string/back"
+                    android:textColor="@color/grey"
+                    android:textSize="20dp" />
+            </LinearLayout>
 
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>

@@ -3,4 +3,5 @@
 
     <string name="localmusic">本地音乐</string>
     <string name="onlinemusic">线上音乐</string>
+    <string name="back">退出</string>
 </resources>
