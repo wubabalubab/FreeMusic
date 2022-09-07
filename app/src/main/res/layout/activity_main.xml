@@ -7,6 +7,13 @@
     android:background="@color/teal_200"
     tools:context=".activity.MainActivity">
 
+    <include
+        layout="@layout/layout_activity_main_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_actmain"
         android:layout_width="match_parent"
@@ -42,6 +49,9 @@
             </LinearLayout>
 
         </com.google.android.material.navigation.NavigationView>
+
+
     </androidx.drawerlayout.widget.DrawerLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

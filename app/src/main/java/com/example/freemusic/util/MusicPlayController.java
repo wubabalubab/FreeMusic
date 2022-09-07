@@ -57,21 +57,31 @@ public class MusicPlayController implements MusicPlay {
     }
 
     @Override
+    public boolean isPlay() {
+        return mMediaPlayer.isPlaying();
+    }
+
+    @Override
     public void play() {
         // TODO: 22-8-24 这里要考虑和prepare异步的回调
-        if (isPrepared) {
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+        } else {
             mMediaPlayer.start();
         }
     }
 
     @Override
-    public void pause() {
-
+    public void stop() {
+        mMediaPlayer.stop();
     }
 
     @Override
     public void destroy() {
         // TODO: 22-8-24 考虑销毁时机与销毁什么资源
+        if (mMediaPlayer != null) {
+            mMediaPlayer = null;
+        }
     }
 
     private void openfile(Context context) {
@@ -138,7 +148,7 @@ public class MusicPlayController implements MusicPlay {
         if (cursor != null) {
             cursor.close();
         }
-        Log.e("TAG", "getLocalList: "+mMusicBeanList );
+        Log.e("TAG", "getLocalList: " + mMusicBeanList);
         return mMusicBeanList;
     }
 

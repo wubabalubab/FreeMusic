@@ -1,6 +1,7 @@
 package com.example.freemusic.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,9 @@ public class MainActivity extends BaseUIActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
-
+                if (item.getItemId() == R.id.item_menu_play) {
+                    MainActivity.this.startActivity(new Intent(MainActivity.this, PlayActivity.class));
+                }
                 return true;
             }
         });
