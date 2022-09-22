@@ -13,10 +13,16 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseUIActivity {
 
@@ -24,6 +30,8 @@ public class MainActivity extends BaseUIActivity {
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     TextView tvBack;
+    ViewPager2 mVpMain;
+    TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,8 @@ public class MainActivity extends BaseUIActivity {
         mDrawerLayout = findViewById(R.id.drawer_actmain);
         mNavigationView = findViewById(R.id.navigation_actmain);
         tvBack = findViewById(R.id.tv_act_main_back);
+        mVpMain=findViewById(R.id.vp_act_main);
+        mTabLayout=findViewById(R.id.tab_act_main);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -85,9 +95,14 @@ public class MainActivity extends BaseUIActivity {
                 }
             }
         });
+        List<Fragment> tabFragmentList=new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+
+        }
     }
 
     @Override
     protected void initData() {
+
     }
 }
