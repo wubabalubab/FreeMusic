@@ -7,14 +7,15 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class ViewPagerAdapter extends FragmentStateAdapter  {
 
     List<Fragment> list;
 
-    public ViewPagerAdapter(List<Fragment> list,@NonNull FragmentActivity fragmentActivity) {
+    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity,List<Fragment> fragments) {
         super(fragmentActivity);
-        this.list=list;
+        list=fragments;
     }
+
 
     @NonNull
     @Override

@@ -3,6 +3,7 @@ package com.example.freemusic.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,8 +19,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
+import com.example.freemusic.adapter.ViewPagerAdapter;
+import com.example.freemusic.view.VpFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class MainActivity extends BaseUIActivity {
     TextView tvBack;
     ViewPager2 mVpMain;
     TabLayout mTabLayout;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +55,22 @@ public class MainActivity extends BaseUIActivity {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        mVpMain.setCurrentItem(0);
 
+      mVpMain.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+              mVpMain.setCurrentItem(1);
+          }
+      }, 2000);
     }
 
     @Override
@@ -73,6 +91,9 @@ public class MainActivity extends BaseUIActivity {
         tvBack = findViewById(R.id.tv_act_main_back);
         mVpMain=findViewById(R.id.vp_act_main);
         mTabLayout=findViewById(R.id.tab_act_main);
+
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        // TODO: 22-9-27 和viewpager2的手势冲突处理
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,10 +117,28 @@ public class MainActivity extends BaseUIActivity {
             }
         });
         List<Fragment> tabFragmentList=new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-
+        List<String> tabTitles=new ArrayList<>();
+        tabTitles.add(this.getResources().getString(R.string.all));
+        tabTitles.add(this.getResources().getString(R.string.songlist));
+        tabTitles.add(this.getResources().getString(R.string.artist));
+        tabTitles.add(this.getResources().getString(R.string.album));
+        for (int i = 0; i < tabTitles.size(); i++) {
+            tabFragmentList.add(new VpFragment());
         }
+        viewPagerAdapter = new ViewPagerAdapter(this, tabFragmentList);
+        mVpMain.setAdapter(viewPagerAdapter);
+        mVpMain.setUserInputEnabled(true);
+        Log.e(TAG, "initView: "+viewPagerAdapter.getItemCount() );
+        TabLayoutMediator tabLayoutMediator=new TabLayoutMediator(mTabLayout, mVpMain, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(tabTitles.get(position));
+            }
+        });
+        tabLayoutMediator.attach();
     }
+
+
 
     @Override
     protected void initData() {

@@ -7,12 +7,7 @@
     android:background="@color/teal_200"
     tools:context=".activity.MainActivity">
 
-    <include
-        layout="@layout/layout_activity_main_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_actmain"
@@ -52,6 +47,11 @@
 
 
     </androidx.drawerlayout.widget.DrawerLayout>
-
+    <include
+        layout="@layout/layout_activity_main_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
