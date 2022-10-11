@@ -3,6 +3,7 @@ package com.example.freemusic.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
 import com.example.freemusic.adapter.ViewPagerAdapter;
+import com.example.freemusic.model.TabClass;
 import com.example.freemusic.view.VpFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -38,6 +44,7 @@ public class MainActivity extends BaseUIActivity {
     TabLayout mTabLayout;
     private ViewPagerAdapter viewPagerAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -52,11 +59,6 @@ public class MainActivity extends BaseUIActivity {
             }
         });
         resultRegistry.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
 
     }
 
@@ -65,12 +67,12 @@ public class MainActivity extends BaseUIActivity {
         super.onResume();
         mVpMain.setCurrentItem(0);
 
-      mVpMain.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-              mVpMain.setCurrentItem(1);
-          }
-      }, 2000);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
     }
 
     @Override
@@ -83,14 +85,13 @@ public class MainActivity extends BaseUIActivity {
         }
     }
 
-
     @Override
     protected void initView() {
         mDrawerLayout = findViewById(R.id.drawer_actmain);
         mNavigationView = findViewById(R.id.navigation_actmain);
         tvBack = findViewById(R.id.tv_act_main_back);
-        mVpMain=findViewById(R.id.vp_act_main);
-        mTabLayout=findViewById(R.id.tab_act_main);
+        mVpMain = findViewById(R.id.vp_act_main);
+        mTabLayout = findViewById(R.id.tab_act_main);
 
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // TODO: 22-9-27 和viewpager2的手势冲突处理
@@ -116,20 +117,19 @@ public class MainActivity extends BaseUIActivity {
                 }
             }
         });
-        List<Fragment> tabFragmentList=new ArrayList<>();
-        List<String> tabTitles=new ArrayList<>();
-        tabTitles.add(this.getResources().getString(R.string.all));
-        tabTitles.add(this.getResources().getString(R.string.songlist));
-        tabTitles.add(this.getResources().getString(R.string.artist));
-        tabTitles.add(this.getResources().getString(R.string.album));
+        List<Fragment> tabFragmentList = new ArrayList<>();
+        List<String> tabTitles = new ArrayList<>();
+        tabTitles.add(TabClass.all);
+        tabTitles.add(TabClass.album);
+        tabTitles.add(TabClass.songlist);
+        tabTitles.add(TabClass.artist);
         for (int i = 0; i < tabTitles.size(); i++) {
             tabFragmentList.add(new VpFragment());
         }
         viewPagerAdapter = new ViewPagerAdapter(this, tabFragmentList);
         mVpMain.setAdapter(viewPagerAdapter);
         mVpMain.setUserInputEnabled(true);
-        Log.e(TAG, "initView: "+viewPagerAdapter.getItemCount() );
-        TabLayoutMediator tabLayoutMediator=new TabLayoutMediator(mTabLayout, mVpMain, new TabLayoutMediator.TabConfigurationStrategy() {
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(mTabLayout, mVpMain, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(tabTitles.get(position));
@@ -138,10 +138,9 @@ public class MainActivity extends BaseUIActivity {
         tabLayoutMediator.attach();
     }
 
-
-
     @Override
     protected void initData() {
 
     }
+
 }
