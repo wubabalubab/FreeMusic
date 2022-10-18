@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import com.example.freemusic.abstracts.MyApplication;
 import com.example.freemusic.inf.MusicPlay;
-import com.example.freemusic.model.MusicBean;
+import com.example.freemusic.model.entity.MusicBean;
 import com.example.freemusic.util.MusicPlayController;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class BgPlayService extends Service {
             return mPlayBinder;
         }
         BgPlayService bgPlayService = new BgPlayService();
-        bgPlayService.getApplication().bindService(new Intent(MyApplication.getmContext(), BgPlayService.class), new ServiceConnection() {
+        bgPlayService.getApplication().bindService(new Intent(MyApplication.getContext(), BgPlayService.class), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mPlayBinder = (PlayBinder) service;

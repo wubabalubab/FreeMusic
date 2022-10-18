@@ -8,11 +8,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.freemusic.abstracts.MyApplication;
 import com.example.freemusic.inf.MusicPlay;
-import com.example.freemusic.model.MusicBean;
+import com.example.freemusic.model.entity.MusicBean;
+import com.example.freemusic.model.viewmodel.MusicListViewModel;
+import com.example.freemusic.model.viewmodel.MusicListViewModelHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class MusicPlayController implements MusicPlay {
 
+    MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
     private List<MusicBean> mMusicBeanList;
     private boolean isPrepared;
     private MediaPlayer mMediaPlayer;
@@ -111,7 +113,6 @@ public class MusicPlayController implements MusicPlay {
         return getLocalList();
     }
 
-
     /**
      * @return return local music list
      */
@@ -125,7 +126,7 @@ public class MusicPlayController implements MusicPlay {
             // TODO: 22-8-24 没有实际测试 Android 10版本下的效果
             collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         }
-        Cursor cursor = MyApplication.getmContext().getContentResolver().query(collection,
+        Cursor cursor = MyApplication.getContext().getContentResolver().query(collection,
                 null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -148,8 +149,7 @@ public class MusicPlayController implements MusicPlay {
         if (cursor != null) {
             cursor.close();
         }
-        Log.e("TAG", "getLocalList: " + mMusicBeanList);
+        musicListViewModel.setList(mMusicBeanList);
         return mMusicBeanList;
     }
-
 }

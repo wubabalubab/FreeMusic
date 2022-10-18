@@ -1,6 +1,6 @@
 package com.example.freemusic.inf;
 
-import com.example.freemusic.model.MusicBean;
+import com.example.freemusic.model.entity.MusicBean;
 
 import java.util.List;
 

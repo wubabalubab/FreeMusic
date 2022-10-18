@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 public class MyApplication extends Application {
 
-    private static Context mContext;
+    private static MyApplication mContext;
 
-    public static Context getmContext() {
+    public static MyApplication getContext() {
         return mContext;
     }
 

@@ -1,4 +1,4 @@
-package com.example.freemusic.model;
+package com.example.freemusic.model.entity;
 
 
 import java.lang.annotation.Retention;
