@@ -140,8 +140,8 @@ public class MainActivity extends BaseUIActivity {
         List<Fragment> tabFragmentList = new ArrayList<>();
         List<String> tabTitles = new ArrayList<>();
         tabTitles.add(TabClass.all);
-        tabTitles.add(TabClass.album);
         tabTitles.add(TabClass.songlist);
+        tabTitles.add(TabClass.album);
         tabTitles.add(TabClass.artist);
         for (int i = 0; i < tabTitles.size(); i++) {
             tabFragmentList.add(new VpFragment());

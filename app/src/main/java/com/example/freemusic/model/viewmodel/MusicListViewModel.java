@@ -1,6 +1,7 @@
 package com.example.freemusic.model.viewmodel;
 
 import android.app.Application;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -23,12 +24,16 @@ public class MusicListViewModel extends AndroidViewModel {
         return mutableLiveData;
     }
 
-    @UiThread
+
     public void setList(List<MusicBean> list) {
         if (mutableLiveData.getValue() != null) {
             mutableLiveData.getValue().clear();
         }
-        mutableLiveData.setValue(new ArrayList<>(list));
+        if (Looper.myLooper()==Looper.getMainLooper()) {
+            mutableLiveData.setValue(new ArrayList<>(list));
+        }else {
+            mutableLiveData.postValue(new ArrayList<>(list));
+        }
     }
 
     @UiThread

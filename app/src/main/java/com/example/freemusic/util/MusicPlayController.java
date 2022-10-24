@@ -6,6 +6,8 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
@@ -26,6 +28,7 @@ public class MusicPlayController implements MusicPlay {
     private List<MusicBean> mMusicBeanList;
     private boolean isPrepared;
     private MediaPlayer mMediaPlayer;
+    private QueryListHandler mQueryListHandler;
 
     @Override
     public void openFilePlay() {
@@ -38,19 +41,7 @@ public class MusicPlayController implements MusicPlay {
         // TODO: 22-8-24 使用service后台交互
         getLocalList();
         mMediaPlayer = new MediaPlayer();
-        try {
-            mMediaPlayer.setDataSource(mMusicBeanList.get(0).getPath());
-            mMediaPlayer.setLooping(false);
-            mMediaPlayer.prepare();
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    isPrepared = true;
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -110,46 +101,76 @@ public class MusicPlayController implements MusicPlay {
 
     @Override
     public List<MusicBean> getMusicList() {
-        return getLocalList();
+        return musicListViewModel.getLiveData().getValue();
     }
 
     /**
-     * @return return local music list
+     * return local music list
      */
-    private List<MusicBean> getLocalList() {
-        // TODO: 22-8-24 这里的处理应当开启后台线程处理
+    private void getLocalList() {
         mMusicBeanList = new ArrayList<>();
-        Uri collection;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            collection = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
-        } else {
-            // TODO: 22-8-24 没有实际测试 Android 10版本下的效果
-            collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        }
-        Cursor cursor = MyApplication.getContext().getContentResolver().query(collection,
-                null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                MusicBean musicBean = new MusicBean();
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
-                // TODO: 22-8-24 未对合适大小数据进行过滤
-                if (!TextUtils.isEmpty(name)) {
-                    musicBean.setName(name);
+        mQueryListHandler = new QueryListHandler(Looper.getMainLooper(), new QueryListHandler.QueryListener() {
+            @Override
+            public void queryComplete() {
+                try {
+                    mMediaPlayer.setDataSource(mMusicBeanList.get(0).getPath());
+                    mMediaPlayer.setLooping(false);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            isPrepared = true;
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                musicBean.setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
-                musicBean.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
-                musicBean.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-                musicBean.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
-                musicBean.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
-                musicBean.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
-                musicBean.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
-                mMusicBeanList.add(musicBean);
             }
+        });
+        QueryThread queryThread = new QueryThread();
+        queryThread.start();
+
+
+    }
+
+    private class QueryThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            Uri collectionUri;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                collectionUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+            } else {
+                // TODO: 22-8-24 没有实际测试 Android 10版本下的效果
+                collectionUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            }
+            Cursor cursor = MyApplication.getContext().getContentResolver().query(collectionUri,
+                    null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    MusicBean musicBean = new MusicBean();
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
+                    // TODO: 22-8-24 未对合适大小数据进行过滤
+                    if (!TextUtils.isEmpty(name)) {
+                        musicBean.setName(name);
+                    }
+                    musicBean.setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                    musicBean.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+                    musicBean.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                    musicBean.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+                    musicBean.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+                    musicBean.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
+                    musicBean.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
+                    mMusicBeanList.add(musicBean);
+                }
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+            musicListViewModel.setList(mMusicBeanList);
+            Message message = new Message();
+            message.what = 100;
+            mQueryListHandler.handleMessage(message);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
-        musicListViewModel.setList(mMusicBeanList);
-        return mMusicBeanList;
     }
 }
