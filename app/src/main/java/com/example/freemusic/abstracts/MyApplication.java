@@ -1,9 +1,15 @@
 package com.example.freemusic.abstracts;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatDelegate;
+
+import com.example.freemusic.other.BgPlayService;
 
 public class MyApplication extends Application {
 
@@ -17,6 +23,17 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        bindService(new Intent(MyApplication.getContext(), BgPlayService.class), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                ((BgPlayService.PlayBinder) service).initPlayer();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        }, BIND_AUTO_CREATE);
     }
 
     public void setDarkMode(boolean isDark) {

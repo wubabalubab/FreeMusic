@@ -1,12 +1,8 @@
 package com.example.freemusic.activity;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,18 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.freemusic.R;
 import com.example.freemusic.abstracts.BaseUIActivity;
 import com.example.freemusic.adapter.ViewPagerAdapter;
 import com.example.freemusic.helper.MainActivityLifeCycle;
-import com.example.freemusic.model.entity.MusicBean;
 import com.example.freemusic.model.entity.TabClass;
 import com.example.freemusic.model.viewmodel.MusicListViewModel;
 import com.example.freemusic.model.viewmodel.MusicListViewModelHelper;
-import com.example.freemusic.other.BgPlayService;
 import com.example.freemusic.view.VpFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -47,19 +40,7 @@ public class MainActivity extends BaseUIActivity {
     ViewPager2 mVpMain;
     TabLayout mTabLayout;
     private ViewPagerAdapter viewPagerAdapter;
-    private BgPlayService.PlayBinder mService;
-    private final ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = (BgPlayService.PlayBinder) service;
-            mService.initPlayer();
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +125,8 @@ public class MainActivity extends BaseUIActivity {
         tabTitles.add(TabClass.album);
         tabTitles.add(TabClass.artist);
         for (int i = 0; i < tabTitles.size(); i++) {
-            tabFragmentList.add(new VpFragment());
+            VpFragment fragment = VpFragment.newInstance(tabTitles.get(i));
+            tabFragmentList.add(fragment);
         }
         viewPagerAdapter = new ViewPagerAdapter(this, tabFragmentList);
         mVpMain.setAdapter(viewPagerAdapter);
@@ -161,7 +143,6 @@ public class MainActivity extends BaseUIActivity {
     @Override
     protected void initData() {
 
-        bindService(new Intent(MainActivity.this, BgPlayService.class), serviceConnection, BIND_AUTO_CREATE);
 
         MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
         musicListViewModel.getLiveData().observe(this, list -> {

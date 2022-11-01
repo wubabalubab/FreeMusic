@@ -32,7 +32,18 @@ public class VpFgListAdapter extends RecyclerView.Adapter<VpFgListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull VpFgListAdapter.ViewHolder holder, int position) {
         MusicBean musicBean = musicBeanList.get(holder.getLayoutPosition());
-        holder.tvTitle.setText(musicBean.getName());
+        StringBuilder builder=new StringBuilder();
+        if (musicBean.getName() != null) {
+            builder.append(musicBean.getName());
+        }
+        if (musicBean.getAuthor() != null) {
+            builder.append(musicBean.getAuthor());
+        }
+        if (musicBean.getAlbum() != null) {
+            builder.append(musicBean.getAlbum());
+        }
+        builder.append(musicBean.getAlbumId());
+        holder.tvTitle.setText(builder);
     }
 
 

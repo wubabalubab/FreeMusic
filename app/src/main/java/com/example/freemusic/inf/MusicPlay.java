@@ -14,11 +14,13 @@ public interface MusicPlay {
 
     void destroy();
 
-    List<MusicBean> getMusicList();
+    void getMusicList(String type);
 
     void initPlayer();
 
     void changeOrder(int orderType);
 
     boolean isPlay();
+
+
 }

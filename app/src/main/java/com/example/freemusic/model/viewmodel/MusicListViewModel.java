@@ -15,6 +15,9 @@ import java.util.List;
 
 public class MusicListViewModel extends AndroidViewModel {
     private MutableLiveData<List<MusicBean>> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<MusicBean>> artistList = new MutableLiveData<>();
+    private MutableLiveData<List<MusicBean>> songList = new MutableLiveData<>();
+    private MutableLiveData<List<MusicBean>> albumList = new MutableLiveData<>();
 
     public MusicListViewModel(@NonNull Application application) {
         super(application);

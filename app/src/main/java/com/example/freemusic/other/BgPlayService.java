@@ -9,10 +9,7 @@ import android.os.IBinder;
 
 import com.example.freemusic.abstracts.MyApplication;
 import com.example.freemusic.inf.MusicPlay;
-import com.example.freemusic.model.entity.MusicBean;
 import com.example.freemusic.util.MusicPlayController;
-
-import java.util.List;
 
 public class BgPlayService extends Service {
     public static boolean isRunning = false;
@@ -32,6 +29,7 @@ public class BgPlayService extends Service {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mPlayBinder = (PlayBinder) service;
+                mPlayBinder.initPlayer();
             }
 
             @Override
@@ -52,6 +50,12 @@ public class BgPlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isRunning =false;
     }
 
     public static class PlayBinder extends Binder implements MusicPlay {
@@ -80,8 +84,8 @@ public class BgPlayService extends Service {
         }
 
         @Override
-        public List<MusicBean> getMusicList() {
-            return musicPlayController.getMusicList();
+        public void getMusicList(String type) {
+            musicPlayController.getMusicList(type);
         }
 
         @Override
