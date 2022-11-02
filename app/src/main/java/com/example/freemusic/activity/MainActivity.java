@@ -143,11 +143,6 @@ public class MainActivity extends BaseUIActivity {
     @Override
     protected void initData() {
 
-
-        MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
-        musicListViewModel.getLiveData().observe(this, list -> {
-
-        });
     }
 
 }

@@ -21,6 +21,7 @@ import java.util.concurrent.Callable;
 
 public class QueryListThread extends Thread implements Callable<List<MusicBean>> {
 
+    public static final long MIN_DURATION = 30000;
     private final String type;
     private final List<MusicBean> beanList = new ArrayList<>();
     private QueryListHandler handler;
@@ -53,10 +54,10 @@ public class QueryListThread extends Thread implements Callable<List<MusicBean>>
                         MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM};
                 break;
             case TabClass.album:
-                queryColumns = new String[]{MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM};
+                queryColumns = new String[]{MediaStore.Audio.Media.DURATION,MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM};
                 break;
             case TabClass.artist:
-                queryColumns = new String[]{MediaStore.Audio.Media.ARTIST};
+                queryColumns = new String[]{MediaStore.Audio.Media.DURATION,MediaStore.Audio.Media.ARTIST};
                 break;
             case TabClass.songlist:
                 // TODO: 22-10-31 自定义歌单
@@ -65,10 +66,9 @@ public class QueryListThread extends Thread implements Callable<List<MusicBean>>
             default:
                 break;
         }
-        Log.e("TAG", "run11: " + Arrays.toString(queryColumns));
         Cursor cursor = MyApplication.getContext().getContentResolver().query(collectionUri,
                 queryColumns, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-        if (beanList.size()>0) {
+        if (beanList.size() > 0) {
             beanList.clear();
         }
         if (cursor != null) {
@@ -76,6 +76,10 @@ public class QueryListThread extends Thread implements Callable<List<MusicBean>>
             while (cursor.moveToNext()) {
                 MusicBean musicBean = new MusicBean();
                 // TODO: 22-8-24 未对合适大小数据进行过滤
+                long duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                if (duration < QueryListThread.MIN_DURATION) {
+                    continue;
+                }
                 if (TextUtils.equals(type, TabClass.all)) {
                     musicBean.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
                     musicBean.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
@@ -107,13 +111,12 @@ public class QueryListThread extends Thread implements Callable<List<MusicBean>>
                 }
                 beanList.add(musicBean);
             }
-            ;
         }
         if (cursor != null) {
             cursor.close();
         }
         MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
-        musicListViewModel.setList(beanList);
+        musicListViewModel.setList(beanList, type);
         Message message = new Message();
         message.what = 100;
         handler.handleMessage(message);

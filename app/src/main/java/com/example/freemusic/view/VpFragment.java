@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +16,6 @@ import com.example.freemusic.R;
 import com.example.freemusic.abstracts.LazyFragment;
 import com.example.freemusic.adapter.VpFgListAdapter;
 import com.example.freemusic.model.entity.MusicBean;
-import com.example.freemusic.model.entity.TabClass;
 import com.example.freemusic.model.viewmodel.MusicListViewModel;
 import com.example.freemusic.model.viewmodel.MusicListViewModelHelper;
 import com.example.freemusic.other.BgPlayService;
@@ -70,16 +68,13 @@ public class VpFragment extends LazyFragment {
     protected void loadData() {
         mServiceBinder.getMusicList(type);
         MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
-        musicListViewModel.getLiveData().observe(this, new Observer<List<MusicBean>>() {
-            @Override
-            public void onChanged(List<MusicBean> list) {
-                Log.e("TAG", "onChanged:fg "+list.size() );
-                if (musicBeanList.size()>0) {
-                    musicBeanList.clear();
-                }
-                musicBeanList.addAll(list);
-                listAdapter.notifyDataSetChanged();
+        musicListViewModel.getLiveData(type).observe(this, list -> {
+            Log.e("TAG", "onChanged:fg " + list.size());
+            if (musicBeanList.size() > 0) {
+                musicBeanList.clear();
             }
+            musicBeanList.addAll(list);
+            listAdapter.notifyDataSetChanged();
         });
     }
 
