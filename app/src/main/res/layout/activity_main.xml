@@ -8,50 +8,45 @@
     tools:context=".activity.MainActivity">
 
 
-
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_actmain"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:openDrawer="start">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation_actmain"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/navigation_main_menu">
+        <com.google.android.material.appbar.AppBarLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/design_default_color_primary_dark"
+                app:layout_scrollFlags="scroll" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:minHeight="40dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:id="@+id/tab_act_main"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_act_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="40dp"
-                android:background="@color/white">
+                android:background="@color/grey" />
 
-                <TextView
-                    android:id="@+id/tv_act_main_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
-                    android:text="@string/back"
-                    android:textColor="@color/grey"
-                    android:textSize="20dp" />
-            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-        </com.google.android.material.navigation.NavigationView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    </androidx.drawerlayout.widget.DrawerLayout>
-    <include
-        layout="@layout/layout_activity_main_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

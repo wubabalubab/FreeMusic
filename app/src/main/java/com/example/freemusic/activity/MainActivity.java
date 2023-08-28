@@ -1,9 +1,7 @@
 package com.example.freemusic.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,8 +9,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,10 +17,7 @@ import com.example.freemusic.abstracts.BaseUIActivity;
 import com.example.freemusic.adapter.ViewPagerAdapter;
 import com.example.freemusic.helper.MainActivityLifeCycle;
 import com.example.freemusic.model.entity.TabClass;
-import com.example.freemusic.model.viewmodel.MusicListViewModel;
-import com.example.freemusic.model.viewmodel.MusicListViewModelHelper;
 import com.example.freemusic.view.VpFragment;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -34,9 +27,6 @@ import java.util.List;
 public class MainActivity extends BaseUIActivity {
 
 
-    DrawerLayout mDrawerLayout;
-    NavigationView mNavigationView;
-    TextView tvBack;
     ViewPager2 mVpMain;
     TabLayout mTabLayout;
     private ViewPagerAdapter viewPagerAdapter;
@@ -79,45 +69,15 @@ public class MainActivity extends BaseUIActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.openDrawer(GravityCompat.START);
-        } else {
-            mDrawerLayout.closeDrawers();
-        }
+
     }
 
     @Override
     protected void initView() {
-        mDrawerLayout = findViewById(R.id.drawer_actmain);
-        mNavigationView = findViewById(R.id.navigation_actmain);
-        tvBack = findViewById(R.id.tv_act_main_back);
+
         mVpMain = findViewById(R.id.vp_act_main);
         mTabLayout = findViewById(R.id.tab_act_main);
 
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        // TODO: 22-9-27 和viewpager2的手势冲突处理
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                if (item.getItemId() == R.id.item_menu_play) {
-                    MainActivity.this.startActivity(new Intent(MainActivity.this, PlayActivity.class));
-                }
-                return true;
-            }
-        });
-        tvBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawers();
-                }
-                if (!MainActivity.this.isFinishing()) {
-                    finish();
-                }
-            }
-        });
         List<Fragment> tabFragmentList = new ArrayList<>();
         List<String> tabTitles = new ArrayList<>();
         tabTitles.add(TabClass.all);
@@ -131,12 +91,8 @@ public class MainActivity extends BaseUIActivity {
         viewPagerAdapter = new ViewPagerAdapter(this, tabFragmentList);
         mVpMain.setAdapter(viewPagerAdapter);
         mVpMain.setUserInputEnabled(true);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(mTabLayout, mVpMain, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(tabTitles.get(position));
-            }
-        });
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(mTabLayout, mVpMain, (tab, position)
+                -> tab.setText(tabTitles.get(position)));
         tabLayoutMediator.attach();
     }
 

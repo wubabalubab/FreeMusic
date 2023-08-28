@@ -1,6 +1,7 @@
 package com.example.freemusic.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.freemusic.R;
+import com.example.freemusic.activity.ListActivity;
 import com.example.freemusic.model.entity.MusicBean;
 
 import java.util.List;
@@ -44,6 +46,15 @@ public class VpFgListAdapter extends RecyclerView.Adapter<VpFgListAdapter.ViewHo
         }
         builder.append(musicBean.getAlbumId());
         holder.tvTitle.setText(builder);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.getLayoutPosition() ==0) {
+                    context.startActivity(new Intent(context, ListActivity.class));
+                }
+            }
+        });
     }
 
 

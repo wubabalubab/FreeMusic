@@ -2,7 +2,6 @@ package com.example.freemusic.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,11 @@ import com.example.freemusic.R;
 import com.example.freemusic.abstracts.LazyFragment;
 import com.example.freemusic.adapter.VpFgListAdapter;
 import com.example.freemusic.model.entity.MusicBean;
-import com.example.freemusic.model.viewmodel.MusicListViewModel;
-import com.example.freemusic.model.viewmodel.MusicListViewModelHelper;
 import com.example.freemusic.other.BgPlayService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class VpFragment extends LazyFragment {
@@ -63,19 +61,29 @@ public class VpFragment extends LazyFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<MusicBean> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            list.add(new MusicBean(new Random().toString()));
+        }
+        musicBeanList.addAll(list);
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void loadData() {
-        mServiceBinder.getMusicList(type);
-        MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
-        musicListViewModel.getLiveData(type).observe(this, list -> {
-            Log.e("TAG", "onChanged:fg " + list.size());
-            if (musicBeanList.size() > 0) {
-                musicBeanList.clear();
-            }
-            musicBeanList.addAll(list);
-            listAdapter.notifyDataSetChanged();
-        });
+//        mServiceBinder.getMusicList(type);
+//        MusicListViewModel musicListViewModel = MusicListViewModelHelper.getInstance();
+//        musicListViewModel.getLiveData(type).observe(this, list -> {
+//            Log.e("TAG", "onChanged:fg " + list.size());
+//            if (musicBeanList.size() > 0) {
+//                musicBeanList.clear();
+//            }
+//            musicBeanList.addAll(list);
+//            listAdapter.notifyDataSetChanged();
+//        });
     }
 
     @Override

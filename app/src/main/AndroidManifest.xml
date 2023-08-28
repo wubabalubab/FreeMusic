@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 此处权限仍有不完善 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -17,6 +16,10 @@
         android:theme="@style/Theme.FreeMusic"
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.ListActivity"
+            android:exported="false" />
+
         <service
             android:name=".other.BgPlayService"
             android:enabled="true"

@@ -10,6 +10,12 @@ public class MusicBean {
     private long id;
     private long albumId;
     private String album;
+    public MusicBean() {
+
+    }
+    public MusicBean(String name) {
+        this.name = name;
+    }
 
     public String getAlbum() {
         return album;
